@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>To My Beautiful Girlfriend</title>
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        height: 100%;
+        background: black;
+        color: white;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    canvas {
+        display: block;
+    }
+
+    .message {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        font-size: 3rem;
+        text-shadow: 0 0 20px #ff66cc, 0 0 40px #66ccff;
+        animation: pulse 3s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { text-shadow: 0 0 20px #ff66cc, 0 0 40px #66ccff; }
+        50% { text-shadow: 0 0 40px #ff66cc, 0 0 60px #66ccff; }
+    }
+</style>
+</head>
+<body>
+
+<canvas id="galaxy"></canvas>
+
+<div class="message">
+    Hey gorgeous, <br>
+    I love you beyond the stars ✨<br>
+    Forever and always ❤️
+</div>
+
+<script>
+// Galaxy Animation
+const canvas = document.getElementById('galaxy');
+const ctx = canvas.getContext('2d');
+
+let stars = [];
+let w, h;
+
+function resize() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+function createStars() {
+    stars = [];
+    for (let i = 0; i < 500; i++) {
+        stars.push({
+            x: Math.random() * w - w / 2,
+            y: Math.random() * h - h / 2,
+            z: Math.random() * w
+        });
+    }
+}
+
+createStars();
+
+function draw() {
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, w, h);
+
+    ctx.fillStyle = 'white';
+    ctx.beginPath();
+
+    for (let i = 0; i < stars.length; i++) {
+        let star = stars[i];
+
+        star.z -= 2;
+        if (star.z <= 0) {
+            star.z = w;
+        }
+
+        let sx = (star.x / star.z) * w + w / 2;
+        let sy = (star.y / star.z) * h + h / 2;
+
+        if (sx < 0 || sx >= w || sy < 0 || sy >= h) continue;
+
+        let size = (1 - star.z / w) * 3;
+        ctx.fillRect(sx, sy, size, size);
+    }
+
+    requestAnimationFrame(draw);
+}
+
+draw();
+</script>
+
+</body>
+</html>
